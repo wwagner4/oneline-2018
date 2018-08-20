@@ -1,3 +1,5 @@
+package oneline
+
 import java.awt.image._
 import java.awt.{BasicStroke, Color, Dimension, Graphics2D}
 import java.io.File
@@ -14,13 +16,13 @@ trait ExportProperties {
   val exportFileName = "Oneline"
   val exportLineWidth = 8.0
 
-  def workDir(): File = ???
-
   private def defaultExportDir: String = {
     val homeDir = workDir()
     val exDir = new File(homeDir, "onelineExport")
     exDir.toString
   }
+
+  def workDir(): File = ???
 }
 
 trait Exporter extends LinePainter {

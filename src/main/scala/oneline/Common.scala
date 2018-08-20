@@ -1,3 +1,5 @@
+package oneline
+
 import scala.collection.mutable
 import scala.math._
 
@@ -35,10 +37,6 @@ class Position(val x: Int, val y: Int, val xOff: Double, val yOff: Double) {
 
 trait HillFunction {
 
-  protected def hillOffset: Double
-
-  protected def hillVariance: Double
-
   // Offset and variance must immutable
   private val offset = hillOffset
   private val variance = hillVariance
@@ -47,6 +45,10 @@ trait HillFunction {
     val d = x - offset
     pow(E, -(d * d) / variance)
   }
+
+  protected def hillOffset: Double
+
+  protected def hillVariance: Double
 }
 
 trait CachedHillFunction extends HillFunction with Cache {

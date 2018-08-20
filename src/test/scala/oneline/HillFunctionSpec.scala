@@ -1,3 +1,5 @@
+package oneline
+
 import org.scalatest.{FunSpec, MustMatchers}
 
 class HillFunctionSpec extends FunSpec with MustMatchers {

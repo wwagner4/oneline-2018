@@ -1,3 +1,5 @@
+package oneline
+
 import java.awt.Color
 import java.awt.image.{BufferedImage, Raster}
 import java.io.File

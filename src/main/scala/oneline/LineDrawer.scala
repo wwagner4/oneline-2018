@@ -1,3 +1,5 @@
+package oneline
+
 import scala.annotation._
 import scala.math._
 import scala.util.Random
@@ -45,10 +47,6 @@ private class DefaultLineDrawer(props: DefaultLineDrawerProperties) extends Line
 
   private val ran = initRandom
 
-  protected def hillOffset = 1.0
-
-  protected def hillVariance = 1.0
-
   def initRandom: Random = {
     if (props.seed <= 0) new Random
     else new Random(props.seed)
@@ -60,13 +58,9 @@ private class DefaultLineDrawer(props: DefaultLineDrawerProperties) extends Line
     re
   }
 
-  private def drawLine(line: List[Position], img: OnelineImage): List[Position] = {
-    if (line.size > props.lineLength) line.reverse
-    else line match {
-      case Nil => drawLine(createStartPosition(img) :: line, img)
-      case prev :: _ => drawLine(createPosition(prev, img) :: line, img)
-    }
-  }
+  protected def hillOffset = 1.0
+
+  protected def hillVariance = 1.0
 
   protected def createStartPosition(img: OnelineImage): Position = {
     val ranX = ran.nextInt(img.width)
@@ -81,14 +75,6 @@ private class DefaultLineDrawer(props: DefaultLineDrawerProperties) extends Line
         val opt = findOptimalPixel(pix, rest, prev, img.maxDist)
         opt.incTouches()
         new Position(opt.x, opt.y, ran.nextDouble, ran.nextDouble)
-    }
-  }
-
-  @tailrec
-  private def findOptimalPixel(optimal: OnelinePixel, img: List[OnelinePixel], prev: Position, maxDist: Double): OnelinePixel = {
-    img match {
-      case Nil => optimal
-      case pix :: rest => findOptimalPixel(better(optimal, pix, prev, maxDist), rest, prev, maxDist)
     }
   }
 
@@ -114,6 +100,22 @@ private class DefaultLineDrawer(props: DefaultLineDrawerProperties) extends Line
     val d2 = d * 2.5 * (10.0 / props.distTrimmer) / maxDist
     val re = hill(d2)
     re
+  }
+
+  private def drawLine(line: List[Position], img: OnelineImage): List[Position] = {
+    if (line.size > props.lineLength) line.reverse
+    else line match {
+      case Nil => drawLine(createStartPosition(img) :: line, img)
+      case prev :: _ => drawLine(createPosition(prev, img) :: line, img)
+    }
+  }
+
+  @tailrec
+  private def findOptimalPixel(optimal: OnelinePixel, img: List[OnelinePixel], prev: Position, maxDist: Double): OnelinePixel = {
+    img match {
+      case Nil => optimal
+      case pix :: rest => findOptimalPixel(better(optimal, pix, prev, maxDist), rest, prev, maxDist)
+    }
   }
 }
 

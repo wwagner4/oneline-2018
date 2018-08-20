@@ -1,3 +1,5 @@
+package oneline
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -60,14 +62,14 @@ trait ExceptionHandlingExecuter extends ActionExecuter {
   */
 trait BackgroundExecuter extends ActionExecuter {
 
-  def exec(): Unit = {
-    super.executeAction()
-  }
-
   override def executeAction(): Unit = {
     Future {
       exec()
     }
+  }
+
+  def exec(): Unit = {
+    super.executeAction()
   }
 }
 
