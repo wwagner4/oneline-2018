@@ -22,7 +22,14 @@ trait ExportProperties {
     exDir.toString
   }
 
-  def workDir(): File = ???
+  def workDir(): File = {
+    val home = new File(System.clearProperty("user.home"))
+    val work = new File(home, "work-oneline")
+    if (!work.exists()) {
+      work.mkdirs()
+    }
+    return work
+  }
 }
 
 trait Exporter extends LinePainter {
