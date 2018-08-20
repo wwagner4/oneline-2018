@@ -12,27 +12,14 @@ trait LineDrawer {
 }
 
 trait DefaultLineDrawerProperties {
-  var lineLength = 100
-  var seed: Long = -1L
-  var distFactor = 1.0
-  var distTrimmer = 1.0
-  var brightnessFactor = 1.0
-  var touchesFactor = 1.0
 
-  def appendNameValues(sb: StringBuilder, format: String) {
-    sb.append(format.format("line length", lineLength.toString))
-    sb.append("\n")
-    sb.append(format.format("seed", seed.toString))
-    sb.append("\n")
-    sb.append(format.format("dist factor", distFactor.toString))
-    sb.append("\n")
-    sb.append(format.format("dist trimmer", distTrimmer.toString))
-    sb.append("\n")
-    sb.append(format.format("brightness factor", brightnessFactor.toString))
-    sb.append("\n")
-    sb.append(format.format("touches factor", touchesFactor.toString))
-    sb.append("\n")
-  }
+  def lineLength = 100
+  def seed: Long = -1L
+  def distFactor = 1.0
+  def distTrimmer = 1.0
+  def brightnessFactor = 1.0
+  def touchesFactor = 1.0
+
 }
 
 object LineDrawer {

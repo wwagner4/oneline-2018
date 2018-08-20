@@ -3,24 +3,18 @@ package oneline
 import java.io.File
 
 object OnelineImageCreatorMain extends App {
-  
-  val myProps = new DefaultLineDrawerProperties {}
 
-  private val creator: OnelineImageCreator = OnelineImageCreator.createFileOnelineImageCreator("src\\main\\resources\\oneline01.jpg")
-  val img = creator.createOnelineImg
-  
-  val ld = LineDrawer.createDefaultLineDrawer(myProps)
-
-  private val line: List[Position] = ld.drawLine(img)
-
-  val myExporter = new Exporter {}
-
-
+  val inputFilePath = "src/main/resources/oneline03.jpg"
   var outFile = new File("target/out_oneline.jpg")
 
-  val myExportProps = new ExportProperties {}
+  val myProps = new DefaultLineDrawerProperties with ExportProperties {
+    override def lineLength: Int = 3500
+    override def exportLineWidth = 2
+  }
 
-  myExporter.export(img, line, myExportProps, outFile)
+  val img = OnelineImageCreator.createFileOnelineImageCreator(inputFilePath).createOnelineImg
+  val line: List[Position] = LineDrawer.createDefaultLineDrawer(myProps).drawLine(img)
+  new Exporter {}.export(img, line, myProps, outFile)
 
-  println("created image at " + outFile)
+  println("created image at " + outFile.getAbsolutePath)
 }

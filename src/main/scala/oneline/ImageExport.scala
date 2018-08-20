@@ -9,27 +9,11 @@ import javax.imageio._
 import scala.math._
 
 trait ExportProperties {
-  val exportWidth = 3000
-  val exportHeight = 3000
-  val exportFormat = "png"
-  val exportOutDir: String = defaultExportDir
-  val exportFileName = "Oneline"
-  val exportLineWidth = 8.0
+  def exportWidth = 3000
+  def exportHeight = 3000
+  def exportFormat = "png"
+  def exportLineWidth = 8.0
 
-  private def defaultExportDir: String = {
-    val homeDir = workDir()
-    val exDir = new File(homeDir, "onelineExport")
-    exDir.toString
-  }
-
-  def workDir(): File = {
-    val home = new File(System.clearProperty("user.home"))
-    val work = new File(home, "work-oneline")
-    if (!work.exists()) {
-      work.mkdirs()
-    }
-    return work
-  }
 }
 
 trait Exporter extends LinePainter {
