@@ -2,7 +2,7 @@ package oneline
 
 import java.awt.image._
 import java.awt.{BasicStroke, Color, Dimension, Graphics2D}
-import java.nio.file.Path
+import java.io.OutputStream
 
 import javax.imageio._
 
@@ -10,22 +10,25 @@ import scala.math._
 
 trait ExportProperties {
   def exportWidth = 3000
+
   def exportHeight = 3000
+
   def exportFormat = "png"
+
   def exportLineWidth = 8.0
 
 }
 
 trait Exporter extends LinePainter {
 
-  def export(img: OnelineImage, line: List[Position], props: ExportProperties, outFile: Path) {
+  def export(img: OnelineImage, line: List[Position], props: ExportProperties, outputStream: OutputStream) {
     val dim = new Dimension(props.exportWidth, props.exportHeight)
     val bim = new BufferedImage(dim.width, dim.height, BufferedImage.TYPE_BYTE_GRAY)
     val g = bim.getGraphics.asInstanceOf[Graphics2D]
     g.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON)
     g.setStroke(new BasicStroke(props.exportLineWidth.asInstanceOf[Float]))
     paintLine(g, dim, img, line, background = false, Color.WHITE)
-    ImageIO.write(bim, props.exportFormat, outFile.toFile)
+    ImageIO.write(bim, props.exportFormat, outputStream)
   }
 
 }

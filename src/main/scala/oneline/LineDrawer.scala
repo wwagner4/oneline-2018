@@ -14,10 +14,15 @@ trait LineDrawer {
 trait DefaultLineDrawerProperties {
 
   def lineLength = 100
+
   def seed: Long = -1L
+
   def distFactor = 1.0
+
   def distTrimmer = 1.0
+
   def brightnessFactor = 1.0
+
   def touchesFactor = 1.0
 
 }

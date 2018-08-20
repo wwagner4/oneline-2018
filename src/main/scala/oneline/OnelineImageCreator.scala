@@ -2,7 +2,7 @@ package oneline
 
 import java.awt.Color
 import java.awt.image.{BufferedImage, Raster}
-import java.nio.file.Path
+import java.io.InputStream
 
 import javax.imageio.{IIOException, ImageIO}
 
@@ -12,17 +12,17 @@ trait OnelineImageCreator {
 }
 
 object OnelineImageCreator {
-  def createFileOnelineImageCreator(fileName: Path): OnelineImageCreator = {
-    new FileOnelineImageCreator(fileName)
+  def createFileOnelineImageCreator(inputStream: InputStream): OnelineImageCreator = {
+    new FileOnelineImageCreator(inputStream)
   }
 
 }
 
-private class FileOnelineImageCreator(val fileName: Path) extends OnelineImageCreator {
+private class FileOnelineImageCreator(val inputStream: InputStream) extends OnelineImageCreator {
 
   def createOnelineImg: OnelineImage = {
-    val bimg = readImageFile(fileName)
-    if (bimg == null) throw new IllegalArgumentException("'" + fileName + "' contains no image")
+    val bimg = readImageFile(inputStream)
+    if (bimg == null) throw new IllegalArgumentException("Input stream contains no image")
     val w = bimg.getWidth
     val h = bimg.getHeight
     val pl = createPixelList(bimg.getData, w, h)
@@ -38,12 +38,12 @@ private class FileOnelineImageCreator(val fileName: Path) extends OnelineImageCr
     re.toList
   }
 
-  private def readImageFile(path: Path): BufferedImage = {
+  private def readImageFile(inputStream: InputStream): BufferedImage = {
     try {
-      ImageIO.read(path.toFile)
+      ImageIO.read(inputStream)
     } catch {
       case ioe: IIOException => throw new IllegalStateException(
-        "Error reading '" + fileName + "'. " + ioe.getMessage, ioe)
+        "Error reading image input stream " + ioe.getMessage, ioe)
     }
 
   }
