@@ -1,11 +1,10 @@
 import java.awt.image._
-import java.awt.{BasicStroke, Color}
+import java.awt.{BasicStroke, Color, Dimension, Graphics2D}
 import java.io.File
 
 import javax.imageio._
 
 import scala.math._
-import scala.swing._
 
 trait ExportProperties {
   val exportWidth = 3000
@@ -15,8 +14,10 @@ trait ExportProperties {
   val exportFileName = "Oneline"
   val exportLineWidth = 8.0
 
+  def workDir(): File = ???
+
   private def defaultExportDir: String = {
-    val homeDir = new FileChooser().peer.getCurrentDirectory
+    val homeDir = workDir()
     val exDir = new File(homeDir, "onelineExport")
     exDir.toString
   }

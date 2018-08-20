@@ -1,6 +1,5 @@
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import scala.swing._
 
 /**
   * Base class for all executors
@@ -92,56 +91,5 @@ trait BeforAfterExecuter extends ActionExecuter {
   }
 }
 
-/**
-  * Disables a component at the start of an execution and enables it if the execution
-  * is finished
-  */
-trait DisableComponentExecuter extends BeforAfterExecuter {
-
-  def toBeDisabledComponent: Component
-
-  def beforeExecuteAction(): Unit = {
-    toBeDisabledComponent.enabled = false
-  }
-
-  def afterExecuteAction(): Unit = {
-    toBeDisabledComponent.enabled = true
-  }
-
-}
-
-/**
-  * Disables multiple components at the start of an execution and enables them if the execution
-  * is finished
-  */
-trait DisableComponentsExecuter extends BeforAfterExecuter {
-
-  def toBeDisabledComponents: Iterable[Component]
-
-  def beforeExecuteAction(): Unit = {
-    toBeDisabledComponents.foreach(c => c.enabled = false)
-  }
-
-  def afterExecuteAction(): Unit = {
-    toBeDisabledComponents.foreach(c => c.enabled = true)
-  }
-
-}
-
-trait ProgressIndicatingExecuter extends BeforAfterExecuter {
-
-  def progressParentComponent: Window
-
-  private def progressDialog = new Dialog(progressParentComponent)
-
-  def beforeExecuteAction(): Unit = {
-    progressDialog.open
-  }
-
-  def afterExecuteAction(): Unit = {
-    progressDialog.close
-  }
-
-}
 
 
