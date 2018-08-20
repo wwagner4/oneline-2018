@@ -2,7 +2,7 @@ package oneline
 
 import java.awt.image._
 import java.awt.{BasicStroke, Color, Dimension, Graphics2D}
-import java.io.File
+import java.nio.file.Path
 
 import javax.imageio._
 
@@ -18,14 +18,14 @@ trait ExportProperties {
 
 trait Exporter extends LinePainter {
 
-  def export(img: OnelineImage, line: List[Position], props: ExportProperties, outFile: File) {
+  def export(img: OnelineImage, line: List[Position], props: ExportProperties, outFile: Path) {
     val dim = new Dimension(props.exportWidth, props.exportHeight)
     val bim = new BufferedImage(dim.width, dim.height, BufferedImage.TYPE_BYTE_GRAY)
     val g = bim.getGraphics.asInstanceOf[Graphics2D]
     g.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON)
     g.setStroke(new BasicStroke(props.exportLineWidth.asInstanceOf[Float]))
     paintLine(g, dim, img, line, background = false, Color.WHITE)
-    ImageIO.write(bim, props.exportFormat, outFile)
+    ImageIO.write(bim, props.exportFormat, outFile.toFile)
   }
 
 }

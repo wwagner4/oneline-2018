@@ -2,7 +2,7 @@ package oneline
 
 import java.awt.Color
 import java.awt.image.{BufferedImage, Raster}
-import java.io.File
+import java.nio.file.Path
 
 import javax.imageio.{IIOException, ImageIO}
 
@@ -12,13 +12,13 @@ trait OnelineImageCreator {
 }
 
 object OnelineImageCreator {
-  def createFileOnelineImageCreator(fileName: String): OnelineImageCreator = {
+  def createFileOnelineImageCreator(fileName: Path): OnelineImageCreator = {
     new FileOnelineImageCreator(fileName)
   }
 
 }
 
-private class FileOnelineImageCreator(val fileName: String) extends OnelineImageCreator {
+private class FileOnelineImageCreator(val fileName: Path) extends OnelineImageCreator {
 
   def createOnelineImg: OnelineImage = {
     val bimg = readImageFile(fileName)
@@ -38,9 +38,9 @@ private class FileOnelineImageCreator(val fileName: String) extends OnelineImage
     re.toList
   }
 
-  private def readImageFile(fileName: String): BufferedImage = {
+  private def readImageFile(path: Path): BufferedImage = {
     try {
-      ImageIO.read(new File(fileName))
+      ImageIO.read(path.toFile)
     } catch {
       case ioe: IIOException => throw new IllegalStateException(
         "Error reading '" + fileName + "'. " + ioe.getMessage, ioe)
