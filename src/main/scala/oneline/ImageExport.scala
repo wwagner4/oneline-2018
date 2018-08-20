@@ -19,7 +19,7 @@ trait ExportProperties {
 
 }
 
-trait Exporter extends LinePainter {
+trait Exportor extends LinePainter {
 
   def export(img: OnelineImage, line: List[Position], props: ExportProperties, outputStream: OutputStream) {
     val dim = new Dimension(props.exportWidth, props.exportHeight)

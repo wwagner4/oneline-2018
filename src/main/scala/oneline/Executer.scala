@@ -6,7 +6,7 @@ import scala.concurrent.Future
 /**
   * Base class for all executors
   */
-trait ActionExecuter {
+trait ActionExecutor {
 
   def executable: Unit => Unit
 
@@ -19,7 +19,7 @@ trait ActionExecuter {
 /**
   * Handles any exception that might be thrown during action execution
   */
-trait ExceptionHandlingExecuter extends ActionExecuter {
+trait ExceptionHandlingExecutor extends ActionExecutor {
 
   override def executeAction(): Unit = {
     try {
@@ -60,7 +60,7 @@ trait ExceptionHandlingExecuter extends ActionExecuter {
   * Runs the execution in a separate thread
   *
   */
-trait BackgroundExecuter extends ActionExecuter {
+trait BackgroundExecutor extends ActionExecutor {
 
   override def executeAction(): Unit = {
     Future {
@@ -77,7 +77,7 @@ trait BackgroundExecuter extends ActionExecuter {
   * Does something before and after the execution
   *
   */
-trait BeforAfterExecuter extends ActionExecuter {
+trait BeforAfterExecutor extends ActionExecutor {
 
   def beforeExecuteAction()
 

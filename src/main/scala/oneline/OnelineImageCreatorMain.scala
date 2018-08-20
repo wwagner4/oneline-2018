@@ -16,7 +16,7 @@ object OnelineImageCreatorMain extends App {
   val img = loan(Files.newInputStream(inFile))(in => OnelineImageCreator.createFileOnelineImageCreator(in).createOnelineImg)
   val line: List[Position] = LineDrawer.createDefaultLineDrawer(props).drawLine(img)
   var outFile = Paths.get("target", "out_oneline.jpg")
-  loan(Files.newOutputStream(outFile))(out => new Exporter {}.export(img, line, props, out))
+  loan(Files.newOutputStream(outFile))(out => new Exportor {}.export(img, line, props, out))
 
   println(s"Created onleine-image at $outFile from $inFile")
 
