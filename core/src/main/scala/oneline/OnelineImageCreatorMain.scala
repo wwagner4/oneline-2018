@@ -2,9 +2,6 @@ package oneline
 
 import java.nio.file.{Files, Paths}
 
-import scala.util.{Failure, Success, Try}
-
-
 object OnelineImageCreatorMain extends App with Loaneable {
 
   val props = new LineDrawerProperties with ExportProperties {
@@ -13,8 +10,8 @@ object OnelineImageCreatorMain extends App with Loaneable {
     override def exportLineWidth = 2
   }
 
-  val inFile = Paths.get("src", "main", "resources", "oneline03.jpg")
-  var outFile = Paths.get("target", "out_oneline.jpg")
+  val inFile = Paths.get("core","src", "main", "resources", "oneline03.jpg")
+  var outFile = Paths.get("core","target", "out_oneline.jpg")
 
   val imgCreator = new ImageCreator()
   val lineDrawer = new LineDrawer(props)
