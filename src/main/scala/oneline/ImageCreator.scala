@@ -7,20 +7,9 @@ import java.io.InputStream
 import javax.imageio.{IIOException, ImageIO}
 
 
-trait OnelineImageCreator {
-  def createOnelineImg: OnelineImage
-}
+class ImageCreator {
 
-object OnelineImageCreator {
-  def createFileOnelineImageCreator(inputStream: InputStream): OnelineImageCreator = {
-    new FileOnelineImageCreator(inputStream)
-  }
-
-}
-
-private class FileOnelineImageCreator(val inputStream: InputStream) extends OnelineImageCreator {
-
-  def createOnelineImg: OnelineImage = {
+  def createOnelineImg(inputStream: InputStream): OnelineImage = {
     val bimg = readImageFile(inputStream)
     if (bimg == null) throw new IllegalArgumentException("Input stream contains no image")
     val w = bimg.getWidth

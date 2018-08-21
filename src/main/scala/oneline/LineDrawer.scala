@@ -5,13 +5,7 @@ import scala.math._
 import scala.util.Random
 
 
-trait LineDrawer {
-
-  def drawLine(img: OnelineImage): List[Position]
-
-}
-
-trait DefaultLineDrawerProperties {
+trait LineDrawerProperties {
 
   def lineLength = 100
 
@@ -27,15 +21,7 @@ trait DefaultLineDrawerProperties {
 
 }
 
-object LineDrawer {
-
-  def createDefaultLineDrawer(props: DefaultLineDrawerProperties): LineDrawer = {
-    new DefaultLineDrawer(props)
-  }
-
-}
-
-private class DefaultLineDrawer(props: DefaultLineDrawerProperties) extends LineDrawer with CachedHillFunction {
+class LineDrawer(props: LineDrawerProperties) extends CachedHillFunction {
 
   private val ran = initRandom
 

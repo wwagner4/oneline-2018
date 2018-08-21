@@ -9,19 +9,17 @@ import javax.imageio._
 import scala.math._
 
 trait ExportProperties {
+
   def exportWidth = 3000
-
   def exportHeight = 3000
-
   def exportFormat = "png"
-
   def exportLineWidth = 8.0
 
 }
 
-trait Exportor extends LinePainter {
+class Exportor(val props: ExportProperties) extends LinePainter {
 
-  def export(img: OnelineImage, line: List[Position], props: ExportProperties, outputStream: OutputStream) {
+  def export(img: OnelineImage, line: List[Position], outputStream: OutputStream) {
     val dim = new Dimension(props.exportWidth, props.exportHeight)
     val bim = new BufferedImage(dim.width, dim.height, BufferedImage.TYPE_BYTE_GRAY)
     val g = bim.getGraphics.asInstanceOf[Graphics2D]

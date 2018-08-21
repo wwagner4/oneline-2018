@@ -2,6 +2,7 @@ package oneline
 
 import scala.collection.mutable
 import scala.math._
+import scala.util.{Failure, Success, Try}
 
 class OnelineImage(val pixels: List[OnelinePixel], val width: Int, val height: Int) {
 
@@ -75,6 +76,21 @@ trait Cache {
         cache.put(key, y)
         y
       case Some(y) => y
+    }
+  }
+
+}
+
+trait Loaneable {
+
+  def loan[A <: AutoCloseable, B](resource: A)(block: A => B): B = {
+    Try(block(resource)) match {
+      case Success(result) =>
+        resource.close()
+        result
+      case Failure(e) =>
+        resource.close()
+        throw e
     }
   }
 

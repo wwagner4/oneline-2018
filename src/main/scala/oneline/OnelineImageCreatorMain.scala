@@ -5,30 +5,26 @@ import java.nio.file.{Files, Paths}
 import scala.util.{Failure, Success, Try}
 
 
-object OnelineImageCreatorMain extends App {
+object OnelineImageCreatorMain extends App with Loaneable {
 
-  val inFile = Paths.get("src", "main", "resources", "oneline03.jpg")
-  val props = new DefaultLineDrawerProperties with ExportProperties {
+  val props = new LineDrawerProperties with ExportProperties {
     override def lineLength: Int = 3500
 
     override def exportLineWidth = 2
   }
-  val img = loan(Files.newInputStream(inFile))(in => OnelineImageCreator.createFileOnelineImageCreator(in).createOnelineImg)
-  val line: List[Position] = LineDrawer.createDefaultLineDrawer(props).drawLine(img)
+
+  val inFile = Paths.get("src", "main", "resources", "oneline03.jpg")
   var outFile = Paths.get("target", "out_oneline.jpg")
-  loan(Files.newOutputStream(outFile))(out => new Exportor {}.export(img, line, props, out))
 
-  println(s"Created onleine-image at $outFile from $inFile")
+  val imgCreator = new ImageCreator()
+  val lineDrawer = new LineDrawer(props)
+  val exporter = new Exportor(props)
 
-  def loan[A <: AutoCloseable, B](resource: A)(block: A => B): B = {
-    Try(block(resource)) match {
-      case Success(result) =>
-        resource.close()
-        result
-      case Failure(e) =>
-        resource.close()
-        throw e
-    }
-  }
+  val img = loan(Files.newInputStream(inFile))(in => imgCreator.createOnelineImg(in))
+  val line: List[Position] = lineDrawer.drawLine(img)
+  loan(Files.newOutputStream(outFile))(out => exporter.export(img, line, out))
+
+  println(s"--- Created onleine-image at $outFile from $inFile")
+
 
 }
