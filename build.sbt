@@ -5,25 +5,29 @@ lazy val commonSettings = Seq(
 )
 
 lazy val root = (project in file("."))
-  .aggregate(oneline_core, oneline_client, oneline_server)
+  .aggregate(core, client, server)
 
-lazy val oneline_core = (project in file("core"))
+lazy val core = (project in file("core"))
   .settings(
-    commonSettings,
     name := "oneline-2018-core",
+    commonSettings,
     libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.5" % Test
   )
 
-lazy val oneline_client = (project in file("client"))
+lazy val client = (project in file("client"))
+  .enablePlugins(ScalaJSPlugin)
   .settings(
     name := "oneline-2018-client",
     commonSettings,
+    scalaJSUseMainModuleInitializer := true,
+    libraryDependencies += "org.scala-js" %%% "scalajs-dom" % "0.9.6",
+    libraryDependencies += "org.querki" %%% "jquery-facade" % "1.2",
   )
-  .dependsOn(oneline_core)
+  .dependsOn(core)
 
-lazy val oneline_server = (project in file("server"))
+lazy val server = (project in file("server"))
   .settings(
     name := "oneline-2018-server",
     commonSettings,
   )
-  .dependsOn(oneline_core)
+  .dependsOn(core)
