@@ -3,8 +3,7 @@ package oneline.client
 import org.scalajs.dom
 
 import scala.scalajs.js.annotation.JSExportTopLevel
-import org.querki.jquery._
-import org.scalajs.dom.raw.{File, HTMLInputElement, UIEvent}
+import org.scalajs.dom.raw._
 
 object Main {
 
@@ -16,8 +15,9 @@ object Main {
   def body: String =
     """
       |<h1>oneline</h1>
-      |<p>upload an image an create your own oneline image 05</p>
+      |<p>upload an image an create your own oneline image 06</p>
       |<input id="inp" type='file' onChange="selectedFile()"/>
+      |<img id="iid" src="#" />
     """.stripMargin
 
   @JSExportTopLevel("selectedFile")
@@ -27,6 +27,11 @@ object Main {
     println("inp len:" + input.files.length)
     for(i <- 0 until input.files.length) {
       println("f " + input.files(i).asInstanceOf[File].name)
+      val fr = new FileReader()
+      fr.onload = UIEvent =>  {
+        dom.document.getElementById("iid").asInstanceOf[HTMLImageElement].src = fr.result.asInstanceOf[String]
+      }
+      fr.readAsDataURL(input.files(i))
     }
   }
 }
