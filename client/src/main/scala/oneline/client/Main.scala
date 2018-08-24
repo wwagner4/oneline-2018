@@ -17,7 +17,7 @@ object Main {
       |<h1>oneline</h1>
       |<p>upload an image an create your own oneline image 06</p>
       |<input id="inp" type='file' onChange="selectedFile()"/>
-      |<img id="iid" src="#" />
+      |<p id="pid">Image as text</p>
     """.stripMargin
 
   @JSExportTopLevel("selectedFile")
@@ -29,7 +29,8 @@ object Main {
       println("f " + input.files(i).asInstanceOf[File].name)
       val fr = new FileReader()
       fr.onload = UIEvent =>  {
-        dom.document.getElementById("iid").asInstanceOf[HTMLImageElement].src = fr.result.asInstanceOf[String]
+        // dom.document.getElementById("iid").asInstanceOf[HTMLImageElement].src = fr.result.asInstanceOf[String];
+        dom.document.getElementById("pid").innerHTML = fr.result.asInstanceOf[String];
       }
       fr.readAsDataURL(input.files(i))
     }
