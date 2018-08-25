@@ -21,13 +21,19 @@ lazy val client = (project in file("client"))
     commonSettings,
     scalaJSUseMainModuleInitializer := true,
     libraryDependencies += "org.scala-js" %%% "scalajs-dom" % "0.9.6",
-    libraryDependencies += "org.querki" %%% "jquery-facade" % "1.2",
+    libraryDependencies += "com.lihaoyi" %%% "scalatags" % "0.6.7",
   )
-  .dependsOn(core)
+  .dependsOn(common)
 
 lazy val server = (project in file("server"))
   .settings(
     name := "oneline-2018-server",
     commonSettings,
   )
-  .dependsOn(core)
+  .dependsOn(core, common)
+
+lazy val common = (project in file("common"))
+  .settings(
+    name := "oneline-2018-common",
+    commonSettings,
+  )

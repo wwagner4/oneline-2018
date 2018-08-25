@@ -1,9 +1,11 @@
 package oneline.client
 
 import org.scalajs.dom
+import org.scalajs.dom.html.Input
 
 import scala.scalajs.js.annotation.JSExportTopLevel
 import org.scalajs.dom.raw._
+import scalatags.JsDom
 
 object Main {
 
@@ -11,14 +13,19 @@ object Main {
     dom.document.body.innerHTML = body
   }
 
+  def body: String = {
+    import scalatags.JsDom.all._
 
-  def body: String =
-    """
-      |<h1>oneline</h1>
-      |<p>upload an image an create your own oneline image 06</p>
-      |<input id="inp" type='file' onChange="selectedFile()"/>
-      |<p id="pid">Image as text</p>
-    """.stripMargin
+    val inp: JsDom.TypedTag[dom.Element] = input(id:="inp", `type`:="file", onchange:="selectedFile()")
+
+    div(
+      h1("oneline"),
+      p("upload an image an create your own oneline image 06"),
+      inp,
+      p(id:="pid", "Image as text")
+    ).toString()
+  }
+
 
   @JSExportTopLevel("selectedFile")
   def selectedFile(e: UIEvent): Unit = {
@@ -26,11 +33,11 @@ object Main {
     val input = dom.document.getElementById("inp").asInstanceOf[HTMLInputElement]
     println("inp len:" + input.files.length)
     for(i <- 0 until input.files.length) {
-      println("f " + input.files(i).asInstanceOf[File].name)
+      println("f " + input.files(i).name)
       val fr = new FileReader()
       fr.onload = UIEvent =>  {
         // dom.document.getElementById("iid").asInstanceOf[HTMLImageElement].src = fr.result.asInstanceOf[String];
-        dom.document.getElementById("pid").innerHTML = fr.result.asInstanceOf[String];
+        dom.document.getElementById("pid").innerHTML = fr.result.asInstanceOf[String]
       }
       fr.readAsDataURL(input.files(i))
     }
