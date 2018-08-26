@@ -5,9 +5,13 @@ import org.scalatra._
 class OnelineServlet extends ScalatraServlet {
 
   get("/") {
-    println("at the sever /")
-    "<p>was at the servlet</p>"
+    println("in the server")
+    """<html>
+      |<body>
+      |<p>hallo</p>
+      |</body>
+      |</html>
+    """.stripMargin
   }
-
 
 }
