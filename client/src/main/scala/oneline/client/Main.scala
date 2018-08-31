@@ -1,12 +1,10 @@
 package oneline.client
 
 import org.scalajs.dom
-import org.scalajs.dom.html.Input
+import org.scalajs.dom.ext.Ajax
+import org.scalajs.dom.raw._
 
 import scala.scalajs.js.annotation.JSExportTopLevel
-import org.scalajs.dom.raw._
-import scalatags.JsDom
-import org.scalajs.dom.ext.Ajax
 
 
 object Main {
@@ -23,7 +21,7 @@ object Main {
       h1("oneline"),
       p("upload an image an create your own oneline image 06"),
       input(id := "inp", `type` := "file", onchange := "selectedFile()"),
-      img(id:="iid", src:="#"),
+      img(id := "iid", src := "#"),
       p(id := "pid", "Image as text")
     ).toString()
   }
@@ -31,7 +29,15 @@ object Main {
 
   @JSExportTopLevel("selectedFile")
   def selectedFile(e: UIEvent): Unit = {
-    println("selected file")
+    import oneline.common.DataTransfer
+    import org.scalajs.dom
+    import upickle.default._
+
+    def ajexResult(data: Blob, status: String): Unit = {
+      println("data received from ajax: " + data)
+      println("status received from ajax: " + status)
+    }
+
     val input = dom.document.getElementById("inp").asInstanceOf[HTMLInputElement]
     println("inp len:" + input.files.length)
     for (i <- 0 until input.files.length) {
@@ -39,11 +45,19 @@ object Main {
       val fr = new FileReader()
       fr.onload = _ => {
         val imgs = fr.result.asInstanceOf[String]
+
+        val trans = DataTransfer(img = imgs)
+        val body = write("")
+        Ajax.post(url = "http://localhost:8080/trans", data = body)
+
         val img = dom.document.getElementById("iid").asInstanceOf[HTMLImageElement]
+        //noinspection ScalaDeprecation
         img.src = imgs
         dom.document.getElementById("pid").innerHTML = imgs
       }
       fr.readAsDataURL(input.files(i))
     }
   }
+
+
 }

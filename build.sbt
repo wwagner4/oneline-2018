@@ -1,3 +1,6 @@
+import sbtcrossproject.CrossPlugin.autoImport.{CrossType, crossProject}
+
+
 
 lazy val commonSettings = Seq(
   organization := "net.entelijan",
@@ -6,7 +9,10 @@ lazy val commonSettings = Seq(
 )
 
 lazy val root = (project in file("."))
-  .aggregate(core, client, server)
+  .settings(
+    name := "oneline-2018",
+    commonSettings)
+  .aggregate(core, common.js, common.jvm, client, server)
 
 lazy val core = (project in file("core"))
   .settings(
@@ -16,17 +22,16 @@ lazy val core = (project in file("core"))
   )
 
 lazy val client = (project in file("client"))
-  .enablePlugins(ScalaJSPlugin)
   .settings(
     name := "oneline-2018-client",
     commonSettings,
     scalaJSUseMainModuleInitializer := true,
     libraryDependencies += "org.scala-js" %%% "scalajs-dom" % "0.9.5",
     libraryDependencies += "com.lihaoyi" %%% "scalatags" % "0.6.7",
-    libraryDependencies += "com.lihaoyi" %%% "upickle" % "0.6.6"
+    libraryDependencies += "com.lihaoyi" %%% "upickle" % "0.6.6",
   )
-  .enablePlugins(ScalatraPlugin)
-  .dependsOn(common)
+  .enablePlugins(ScalaJSPlugin)
+  .dependsOn(common.js)
 
 lazy val server = (project in file("server"))
   .settings(
@@ -39,10 +44,13 @@ lazy val server = (project in file("server"))
     //  "javax.servlet" % "javax.servlet-api" % "3.1.0" % "provided"
 
   )
-  .dependsOn(core, common)
+  .dependsOn(core, common.jvm)
 
-lazy val common = (project in file("common"))
+lazy val common = crossProject(JSPlatform, JVMPlatform)
+  .crossType(CrossType.Full)
+  .in(file("common"))
   .settings(
     name := "oneline-2018-common",
     commonSettings,
+    libraryDependencies += "com.lihaoyi" %%% "upickle" % "0.6.6",
   )
