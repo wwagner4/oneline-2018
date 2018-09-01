@@ -38,11 +38,8 @@ lazy val server = (project in file("server"))
     name := "oneline-2018-server",
     commonSettings,
     libraryDependencies += "org.scalatra" %% "scalatra" % "2.6.3",
-    //  libraryDependencies += "org.scalatra" %% "scalatra-scalatest" % ScalatraVersion % "test",
     libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.2.3" % "runtime",
     libraryDependencies += "org.eclipse.jetty" % "jetty-webapp" % "9.4.9.v20180320",
-    //  "javax.servlet" % "javax.servlet-api" % "3.1.0" % "provided"
-
   )
   .dependsOn(core, common.jvm)
 

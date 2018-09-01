@@ -47,8 +47,10 @@ object Main {
         val imgs = fr.result.asInstanceOf[String]
 
         val trans = DataTransfer(img = imgs)
-        val body = write("")
-        Ajax.post(url = "http://localhost:8080/trans", data = body)
+        val body = write(trans)
+        val url = s"/trans"
+        println(s"post $url")
+        Ajax.post(url = url, data = body)
 
         val img = dom.document.getElementById("iid").asInstanceOf[HTMLImageElement]
         //noinspection ScalaDeprecation
