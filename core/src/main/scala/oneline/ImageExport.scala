@@ -19,7 +19,7 @@ trait ExportProperties {
 
 class Exportor(val props: ExportProperties) extends LinePainter {
 
-  def export(img: OnelineImage, line: List[Position], outputStream: OutputStream) {
+  def export(img: OnelineRaster, line: List[Position], outputStream: OutputStream) {
     val dim = new Dimension(props.exportWidth, props.exportHeight)
     val bim = new BufferedImage(dim.width, dim.height, BufferedImage.TYPE_BYTE_GRAY)
     val g = bim.getGraphics.asInstanceOf[Graphics2D]
@@ -35,7 +35,7 @@ class Exportor(val props: ExportProperties) extends LinePainter {
 trait LinePainter {
 
 
-  def paintLine(g: Graphics2D, size: Dimension, img: OnelineImage, line: List[Position], background: Boolean, offColor: Color) {
+  def paintLine(g: Graphics2D, size: Dimension, img: OnelineRaster, line: List[Position], background: Boolean, offColor: Color) {
     val pw = size.width
     val ph = size.height
     val params = new LinePainterParams(pw, ph, img)
@@ -65,7 +65,7 @@ trait LinePainter {
     g.fillRect(xOff, yOff, ceil(params.scaleFactor).toInt, ceil(params.scaleFactor).toInt)
   }
 
-  private def paintLine(g: Graphics2D, params: LinePainterParams, line: List[Position], img: OnelineImage) {
+  private def paintLine(g: Graphics2D, params: LinePainterParams, line: List[Position], img: OnelineRaster) {
     val xVals = lineToArray(params.scaleFactor, { pos: Position => (pos.x, pos.xOff, params.xOffset) }, line)
     val yVals = lineToArray(params.scaleFactor, { pos: Position => (pos.y, pos.yOff, params.yOffset) }, line)
     g.drawPolyline(xVals, yVals, line.size)
@@ -81,7 +81,7 @@ trait LinePainter {
     line.map(f1).toArray[Int]
   }
 
-  class LinePainterParams(panelWidth: Int, panelHeight: Int, img: OnelineImage) {
+  class LinePainterParams(panelWidth: Int, panelHeight: Int, img: OnelineRaster) {
 
     val scaleFactor: Double = scaleFactorFunc(panelWidth, panelHeight, img)
     val xOffset: Int = xoffFunc
@@ -91,7 +91,7 @@ trait LinePainter {
 
     private def yoffFunc = (max(panelHeight - img.height * scaleFactor, 0.0) / 2.0).toInt
 
-    private def scaleFactorFunc(panelWidth: Int, panelHeight: Int, img: OnelineImage): Double = {
+    private def scaleFactorFunc(panelWidth: Int, panelHeight: Int, img: OnelineRaster): Double = {
       val imgRatio = img.width.toDouble / img.height.toDouble
       val panelRatio = panelWidth.toDouble / panelHeight.toDouble
       if (panelRatio < imgRatio) panelWidth.toDouble / img.width

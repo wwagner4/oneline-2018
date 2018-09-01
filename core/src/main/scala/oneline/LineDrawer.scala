@@ -30,7 +30,7 @@ class LineDrawer(props: LineDrawerProperties) extends CachedHillFunction {
     else new Random(props.seed)
   }
 
-  def drawLine(img: OnelineImage): List[Position] = {
+  def drawLine(img: OnelineRaster): List[Position] = {
     img.reset()
     val re = drawLine(List(), img)
     re
@@ -40,13 +40,13 @@ class LineDrawer(props: LineDrawerProperties) extends CachedHillFunction {
 
   protected def hillVariance = 1.0
 
-  protected def createStartPosition(img: OnelineImage): Position = {
+  protected def createStartPosition(img: OnelineRaster): Position = {
     val ranX = ran.nextInt(img.width)
     val ranY = ran.nextInt(img.height)
     new Position(ranX, ranY, ran.nextDouble, ran.nextDouble)
   }
 
-  protected def createPosition(prev: Position, img: OnelineImage): Position = {
+  protected def createPosition(prev: Position, img: OnelineRaster): Position = {
     img.pixels match {
       case Nil => throw new IllegalStateException("Image must contain at least one pixel")
       case pix :: rest =>
@@ -80,7 +80,7 @@ class LineDrawer(props: LineDrawerProperties) extends CachedHillFunction {
     re
   }
 
-  private def drawLine(line: List[Position], img: OnelineImage): List[Position] = {
+  private def drawLine(line: List[Position], img: OnelineRaster): List[Position] = {
     if (line.size > props.lineLength) line.reverse
     else line match {
       case Nil => drawLine(createStartPosition(img) :: line, img)

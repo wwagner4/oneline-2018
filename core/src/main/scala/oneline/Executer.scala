@@ -45,19 +45,19 @@ trait ExceptionHandlingExecutor extends ActionExecutor {
   }
 
   /**
-    * Handle the exception according to the environment your action was executed in
+    * Handle the exception according to the environment your action was executed _in
     */
   def handleActionExecutionException(msg: String)
 
   /**
-    * Define a description for your action that will occur in the error message
+    * Define a description for your action that will occur _in the error message
     */
   def actionDescription: String
 
 }
 
 /**
-  * Runs the execution in a separate thread
+  * Runs the execution _in a separate thread
   *
   */
 trait BackgroundExecutor extends ActionExecutor {

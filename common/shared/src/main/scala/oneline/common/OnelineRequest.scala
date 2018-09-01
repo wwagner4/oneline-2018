@@ -2,11 +2,11 @@ package oneline.common
 
 import upickle.default.{macroRW, ReadWriter => RW}
 
-object DataTransfer {
-  implicit def rw: RW[DataTransfer] = macroRW
+object OnelineRequest {
+  implicit def rw: RW[OnelineRequest] = macroRW
 }
 
-case class DataTransfer(
+case class OnelineRequest(
                          img: String, // The image base64 encoded. data:image/jpeg;base64,/9j/4ZOSRX...
                          exportWidth: Int = 800,
                          exportHeight: Int = 640,

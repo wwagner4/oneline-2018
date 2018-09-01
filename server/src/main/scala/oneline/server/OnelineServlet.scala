@@ -1,8 +1,10 @@
 package oneline.server
 
 import java.nio.file.{Files, Paths}
+import java.util.Base64
 
 import oneline.Loaneable
+import oneline.common.OnelineRequest
 import org.scalatra._
 import org.scalatra.util.io._
 
@@ -41,13 +43,16 @@ class OnelineServlet extends ScalatraServlet with Loaneable {
   }
 
   post("/trans") {
-    println("in the server /trans")
-    """<html>
-      |<body>
-      |<p>hallo</p>
-      |</body>
-      |</html>
-    """.stripMargin
+    println("_in the server /trans")
+    import upickle.default._
+
+    val data = read[OnelineRequest](request.body)
+    val img = data.img
+    println(s"data:'$data'")
+    println(s"img:'$img'")
+    //val base64Text = photoBase64.replaceFirst("^.*,", "")
+    val bytes = Base64.getDecoder.decode(img)
+    Ok()
   }
 
 }

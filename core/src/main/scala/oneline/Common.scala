@@ -4,7 +4,7 @@ import scala.collection.mutable
 import scala.math._
 import scala.util.{Failure, Success, Try}
 
-class OnelineImage(val pixels: List[OnelinePixel], val width: Int, val height: Int) {
+class OnelineRaster(val pixels: List[OnelinePixel], val width: Int, val height: Int) {
 
   def reset(): Unit = {
     pixels foreach { p => p.reset() }
@@ -12,8 +12,7 @@ class OnelineImage(val pixels: List[OnelinePixel], val width: Int, val height: I
 
   def maxDist: Double = sqrt(pow(width, 2) + pow(height, 2))
 
-  override
-  def toString: String = "Img[%d,%d|%s]" format(width, height, pixels)
+  override def toString: String = "Img[%d,%d|%s]" format(width, height, pixels)
 
 }
 
