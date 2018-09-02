@@ -29,7 +29,7 @@ object CreateBase64ImageUrls extends App with Loaneable {
     val out = new ByteArrayOutputStream()
     loan(out)(_out => Files.copy(file, _out))
     val raw = new String(Base64.getEncoder.encode(out.toByteArray))
-    val complete = s"image/$format;base64,$raw"
+    val complete = s"data:image/$format;base64,$raw"
     val chunks = complete.grouped(120).map(str => s"      |$str")
     val chunkStr = chunks.mkString("\n")
     val triple = "\"\"\""

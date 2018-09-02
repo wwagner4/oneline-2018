@@ -1,12 +1,15 @@
 package oneline.client
 
-import oneline.common.OnelineResponse
+import oneline.common.{OnelineRequest, OnelineResponse}
 import org.scalajs.dom
 import org.scalajs.dom.ext.Ajax
 import org.scalajs.dom.raw._
+import upickle.default.{read, write}
 
+import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
 import scala.scalajs.js.annotation.JSExportTopLevel
 import scala.util.{Failure, Success}
+
 
 object Main {
 
@@ -15,6 +18,17 @@ object Main {
   val ID_IMGORIG = "id-imgorig"
   val ID_IMGRESP = "id-imgresp"
 
+  case class SampleImage(
+                          id: String,
+                          img: String,
+                        )
+
+  val sampleImages = Seq(
+    SampleImage("id-sample01", ImageUrls.donquichotte),
+    SampleImage("id-sample02", ImageUrls.corrida),
+    SampleImage("id-sample03", ImageUrls.peacedove),
+  )
+
   def main(args: Array[String]): Unit = {
     dom.document.body.innerHTML = body
     getHtmlElem(ID_FILESELECT_LABEL).style =
@@ -22,12 +36,16 @@ object Main {
          |    cursor: pointer;
          |    background-color: #7474b3;
          |    border-style: solid;
-         |    border-radius: 12px;
          |    border-width: 1px;
-      """.stripMargin
+         |      """.stripMargin
     getHtmlElem(ID_IMGORIG).style =
       """    image-rendering: pixelated;
-        |    width: 600px;
+        |    width: 0px;
+        |    height: auto;
+      """.stripMargin
+    getHtmlElem(ID_IMGRESP).style =
+      """    image-rendering: pixelated;
+        |    width: 0px;
         |    height: auto;
       """.stripMargin
     dom.document.body.style =
@@ -36,29 +54,34 @@ object Main {
         |    font-family: sans-serif;
         |    margin: 20px;
       """.stripMargin
+    sampleImages.foreach { si =>
+      getHtmlElem(si.id).style =
+        """    image-rendering: pixelated;
+          |    width: auto;
+          |    height: 200px;
+          |    padding-right: 5px;
+        """.stripMargin
+    }
   }
 
   def body: String = {
     import scalatags.JsDom.all._
     div(
       h1("oneline"),
-      p("upload an image an create your own oneline image 06"),
-      p(label(id := ID_FILESELECT_LABEL, `for` := ID_FILESELECT, "click here to upload your image"),
+      p("select one of the sample images"),
+      p(sampleImages.map(si => img(id := si.id, src := si.img))),
+      p(label(id := ID_FILESELECT_LABEL, `for` := ID_FILESELECT, "or click here to upload your own image"),
         input(id := ID_FILESELECT, style := "display: none;", `type` := "file", onchange := "selectedFile()")
       ),
-      p(img(id := ID_IMGORIG, src := "#")),
-      p(img(id := ID_IMGRESP, src := "#")),
+      p(img(id := ID_IMGORIG, src := ImageUrls.background)),
+      p(img(id := ID_IMGRESP, src := ImageUrls.background)),
     ).toString()
   }
 
+  var selectedImage = Option.empty[String]
 
   @JSExportTopLevel("selectedFile")
   def selectedFile(e: UIEvent): Unit = {
-    import oneline.common.OnelineRequest
-    import org.scalajs.dom
-    import upickle.default._
-
-    import scala.scalajs.concurrent.JSExecutionContext.Implicits.queue
 
     val input = dom.document.getElementById(ID_FILESELECT).asInstanceOf[HTMLInputElement]
     println("input.files.length:" + input.files.length)
@@ -68,25 +91,40 @@ object Main {
       fr.onload = (evt: UIEvent) => {
         println(s"evt:$evt")
         val imgs = fr.result.asInstanceOf[String]
-        val trans = OnelineRequest(img = imgs)
-        val body = write(trans)
-        println(s"body:$body")
-        val url = s"/trans"
-        println(s"url:$url")
-        Ajax.post(url = url, data = body).onComplete {
-          case Success(xhr) =>
-            println(s"xhr:$xhr")
-            val resp = read[OnelineResponse](xhr.responseText)
-            println(s"resp:$resp")
-            setImage(ID_IMGRESP, resp.img)
-          case Failure(_e) =>
-            println(_e.toString)
-        }
-        val img = dom.document.getElementById(ID_IMGORIG).asInstanceOf[HTMLImageElement]
-        //noinspection ScalaDeprecation
+        getHtmlElem(ID_IMGORIG).style =
+          """image-rendering: pixelated;
+            |width:600px;
+            |height:auto;
+          """.stripMargin
         setImage(ID_IMGORIG, imgs)
+        selectedImage = Some(imgs)
       }
       fr.readAsDataURL(input.files(i))
+    }
+  }
+
+  def callAjax(): Unit = {
+    if (selectedImage.isDefined) {
+      val trans = OnelineRequest(img = selectedImage.get)
+      val body = write(trans)
+      println(s"body:$body")
+      val url = s"/trans"
+      println(s"url:$url")
+      Ajax.post(url = url, data = body).onComplete {
+        case Success(xhr) =>
+          println(s"xhr:$xhr")
+          val resp = read[OnelineResponse](xhr.responseText)
+          println(s"resp:$resp")
+          getHtmlElem(ID_IMGRESP).style =
+            """width:auto;
+              |height:auto;
+            """.stripMargin
+          setImage(ID_IMGRESP, resp.img)
+        case Failure(_e) =>
+          println(_e.toString)
+      }
+    }else {
+      println("NO IMAGE SELECTED")
     }
   }
 
