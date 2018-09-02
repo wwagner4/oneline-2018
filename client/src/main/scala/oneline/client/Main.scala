@@ -17,6 +17,7 @@ object Main {
   val ID_FILESELECT_LABEL = "id-fileselect-label"
   val ID_IMGORIG = "id-imgorig"
   val ID_IMGRESP = "id-imgresp"
+  val ID_CONTENT = "id-content"
 
   case class SampleImage(
                           id: String,
@@ -30,7 +31,18 @@ object Main {
   )
 
   def main(args: Array[String]): Unit = {
-    dom.document.body.innerHTML = body
+    dom.document.body.innerHTML = renderBody
+
+    dom.document.body.style =
+      """    background-color: #38457d;
+      """.stripMargin
+    getHtmlElem(ID_CONTENT).style =
+      """    background-color: #38457d;
+        |    color: #cac9ff;
+        |    font-family: sans-serif;
+        |    margin: 40px;
+        |    font-size: large;
+      """.stripMargin
     getHtmlElem(ID_FILESELECT_LABEL).style =
       s"""    padding: 10px;
          |    cursor: pointer;
@@ -48,12 +60,6 @@ object Main {
         |    width: 0px;
         |    height: auto;
       """.stripMargin
-    dom.document.body.style =
-      """    background-color: #38457d;
-        |    color: #cac9ff;
-        |    font-family: sans-serif;
-        |    margin: 20px;
-      """.stripMargin
     sampleImages.foreach { si =>
       getHtmlElem(si.id).style =
         """    image-rendering: pixelated;
@@ -62,11 +68,12 @@ object Main {
           |    padding-right: 5px;
         """.stripMargin
     }
+
   }
 
-  def body: String = {
+  def renderBody: String = {
     import scalatags.JsDom.all._
-    div(
+    div(id := ID_CONTENT,
       h1("oneline"),
       p("select one of the sample images"),
       p(sampleImages.map(si => img(id := si.id, src := si.img))),
@@ -95,6 +102,7 @@ object Main {
           """image-rendering: pixelated;
             |width:600px;
             |height:auto;
+            |margin-top: 7px;
           """.stripMargin
         setImage(ID_IMGORIG, imgs)
         selectedImage = Some(imgs)
@@ -123,7 +131,7 @@ object Main {
         case Failure(_e) =>
           println(_e.toString)
       }
-    }else {
+    } else {
       println("NO IMAGE SELECTED")
     }
   }
