@@ -9,18 +9,19 @@ import oneline.common.{OnelineRequest, OnelineResponse}
 class ServerOnelineImageCreator extends Loaneable {
 
   def create(request: OnelineRequest): OnelineResponse = {
+    val p1 = lineDrawerProperties(request)
+    val p2 = exportProperties(request)
     val base64Text = request.img.replaceFirst("^.*,", "")
     val bytes = Base64.getDecoder.decode(base64Text)
     val in = new ByteArrayInputStream(bytes)
-    val out = new ByteArrayOutputStream()
-    val p1 = lineDrawerProperties(request)
-    val p2 = exportProperties(request)
+    val out = new ByteArrayOutputStream(10000)
     loan(in){
       _in => loan(out){
         _out => new OnelineImageCreator().create(in = _in, out = _out, p1, p2)
       }
     }
-    val img = Base64.getEncoder.encode(out.toByteArray)
+    val img = new String(Base64.getEncoder.encode(out.toByteArray))
+    println(s"img:$img")
     val imgType = p2.exportFormat.toLowerCase
     val prefix = s"data:image/$imgType;base64,"
 

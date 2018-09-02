@@ -2,7 +2,7 @@ package oneline
 
 import java.io.{InputStream, OutputStream}
 
-class OnelineImageCreator {
+class OnelineImageCreator extends Loaneable {
 
   def create(in: InputStream, out: OutputStream, lineDrawerProperties: LineDrawerProperties, exportProperties: ExportProperties): Unit = {
     val imgCreator = new RasterCreator()
