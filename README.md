@@ -1,2 +1,2 @@
 # oneline-2018
-for details see: http://entelijan.net/oneline 
+for details see: http://entelijan.net/imagecube
