@@ -7,7 +7,7 @@ object OnelineRequest {
 }
 
 case class OnelineRequest(
-                         img: String, // The image base64 encoded. data:image/jpeg;base64,/9j/4ZOSRX...
+                         img: String, // The image base64 encoded. "data:image/jpeg;base64,/9j/4ZOSRX..."
                          exportWidth: Int = 800,
                          exportHeight: Int = 640,
                          exportFormat: String = "png", // jpg, png
@@ -19,3 +19,11 @@ case class OnelineRequest(
                          brightnessFactor: Double = 1.0,
                          touchesFactor: Double = 1.0,
                        )
+
+object OnelineResponseDownlaod {
+  implicit def rw: RW[OnelineResponseDownlaod] = macroRW
+}
+
+case class OnelineResponseDownlaod(
+                                  url: String
+                                  )

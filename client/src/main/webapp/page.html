@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>oneline</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="res/oneline.css"/>
+</head>
+<body>
+<div id="content">
+    <div class="region" id="region01">
+        <div id="title">
+            <img src="res/Oneline_400_133.png">
+        </div>
+        <p>
+            <a id="templAAction" href="#"><img id="templAImg" src="res/bu.png"/></a>
+            <a id="templBAction" href="#"><img id="templBImg" src="res/bu.png"/></a>
+            <a id="templCAction" href="#"><img id="templCImg" src="res/bu.png"/></a>
+        </p>
+        <p>
+            <label class="custom-file-upload">
+                <input id="selImage" type="file"/>
+                upload a file
+            </label>
+        </p>
+        <div class="filler1">&nbsp;</div>
+    </div>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span id="closeModal" class="close">&times;</span>
+            <p id="modalText">Some text in the Modal..</p>
+        </div>
+    </div>
+
+    <div class="region" id="region02">
+        <img id="img" src="res/dv.png"/>
+        <table>
+            <tr>
+                <td class="td1">line length</td>
+                <td class="td2"><input id="lineLength" type="range" min="100" max="2000" value="1000"></td>
+            </tr>
+            <tr>
+                <td class="td1">dist factor</td>
+                <td class="td2"><input id="distFact" type="range" min="0" max="1000" value="475"></td>
+            </tr>
+            <tr>
+                <td class="td1">dist trimmer</td>
+                <td class="td2"><input id="distTrimmer" type="range" min="0" max="1000" value="475"></td>
+            </tr>
+            <tr>
+                <td class="td1">touch factor</td>
+                <td><input id="touchesFact" type="range" min="0" max="1000" value="475"></td>
+            </tr>
+            <tr>
+                <td class="td1">bright. factor</td>
+                <td class="td2"><input id="brightFact" type="range" min="0" max="1000" value="475"></td>
+            </tr>
+        </table>
+        <p>
+            <input class="button" id="createButton" type="button" value="preview"/>
+            <input class="button" id="resetButton" type="button" value="reset"/>
+        </p>
+        <div class="filler1">&nbsp;</div>
+    </div>
+
+    <div class="region" id="region03">
+        <img id="imgOneline" src="res/ol.png"/>
+        <div class="filler1">&nbsp;</div>
+        <p>
+            <span class="select">
+            <select id="downloadSize">
+                <option value="a5">A5</option>
+                <option selected="selected" value="a4">A4</option>
+                <option value="a3">A3</option>
+                <option value="a2">A2</option>
+            </select>
+            <span class="select_arrow"></span>
+            </span>
+            <span class="select">
+            <select id="downloadOrientation">
+                <option value="p">portrait</option>
+                <option value="l">landscape</option>
+            </select>
+            <span class="select_arrow"></span>
+            </span>
+            <input class="button" id="downloadButton" type="button" value="download"/>
+        </p>
+        <div class="filler1">&nbsp;</div>
+    </div>
+</div>
+<iframe id="my_iframe" style="display:none;"></iframe>
+<script type="text/javascript" src="js/oneline-2018-client-fastopt.js"></script>
+<script type="text/javascript" src="js/oneline-2018-client-opt.js"></script>
+</body>
+</html>

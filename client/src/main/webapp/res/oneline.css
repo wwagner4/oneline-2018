@@ -1,0 +1,205 @@
+body {
+    font-family: sans-serif;
+    font-weight: small;
+    font-style: normal;
+    background-color: #dadada;
+    margin-top: 0px;
+    padding-top: 0px;
+    font-size: normal;
+}
+
+#content {
+    margin-top: 0px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 800px;
+    text-align: center;
+    background-color: #ffffff;
+}
+
+#selImageLabel {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#title {
+    padding-top: 50px;
+    padding-bottom: 10px;
+}
+
+#subtitle {
+    padding-bottom: 50px;
+}
+
+.region {
+    display: none;
+}
+
+.filler3 {
+    height: 100px;
+}
+
+.filler2 {
+    height: 50px;
+}
+
+.filler1 {
+    height: 10px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+td {
+    padding: 10px 5px 10px 5px;
+    text-align: right;
+    vertical-align: middle;
+}
+
+td * {
+    width: 100%;
+}
+
+.td1 {
+    width: 100px;
+}
+
+.td2 {
+    padding-top: 13px;
+    padding-bottom: 7px;
+}
+
+.button {
+    background-color: #282828;
+    border: none;
+    color: white;
+    padding: 7px 20px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+    font-size: medium;
+    cursor: pointer;
+}
+
+.select {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 15px;
+    width: 130px;
+}
+
+.select select {
+    font-size: medium;
+    display: inline-block;
+    width: 124px;
+    cursor: pointer;
+    padding: 7px 18px;
+    outline: 0;
+    border: 0px solid #000000;
+    border-radius: 5px;
+    background: #e6e6e6;
+    color: #7b7b7b;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;}
+
+.select select::-ms-expand {
+    display: none;
+}
+
+.select select:hover,
+.select select:focus {
+    color: #000000;
+    background: #cccccc;
+}
+
+.select select:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.select_arrow {
+    position: absolute;
+    top: 13px;
+    right: 15px;
+    pointer-events: none;
+    border-style: solid;
+    border-width: 8px 5px 0px 5px;
+    border-color: #7b7b7b transparent transparent transparent;
+}
+
+.select select:hover ~ .select_arrow,
+.select select:focus ~ .select_arrow {
+    border-top-color: #000000;
+}
+
+.select select:disabled ~ .select_arrow {
+    border-top-color: #cccccc;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    background-color: #282828;
+    border: none;
+    color: white;
+    padding: 7px 20px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+    font-size: medium;
+    cursor: pointer;
+}
+
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #ffffff;
+    font-size: x-large;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 5px;
+    width: 80%;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+

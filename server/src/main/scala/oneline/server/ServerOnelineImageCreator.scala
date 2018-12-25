@@ -1,14 +1,25 @@
 package oneline.server
 
 import java.io.{ByteArrayInputStream, ByteArrayOutputStream}
+import java.nio.file.{Files, Path}
 import java.util.Base64
 
 import oneline._
 import oneline.common.{OnelineRequest, OnelineResponse}
 
-class ServerOnelineImageCreator extends Loaneable {
+object ServerOnelineImageCreator extends Loaneable {
 
   def create(request: OnelineRequest): OnelineResponse = {
+    val p2 = exportProperties(request)
+    val ba = createByteArray(request)
+    val img = new String(Base64.getEncoder.encode(ba))
+    val imgType = p2.exportFormat.toLowerCase
+    val prefix = s"data:image/$imgType;base64,"
+
+    OnelineResponse(img = s"$prefix$img")
+  }
+
+  def createByteArray(request: OnelineRequest): Array[Byte] = {
     val p1 = lineDrawerProperties(request)
     val p2 = exportProperties(request)
     val base64Text = request.img.replaceFirst("^.*,", "")
@@ -20,12 +31,21 @@ class ServerOnelineImageCreator extends Loaneable {
         _out => new OnelineImageCreator().create(in = _in, out = _out, p1, p2)
       }
     }
-    val img = new String(Base64.getEncoder.encode(out.toByteArray))
-    println(s"img:$img")
-    val imgType = p2.exportFormat.toLowerCase
-    val prefix = s"data:image/$imgType;base64,"
+    out.toByteArray
+  }
 
-    OnelineResponse(img = s"$prefix$img")
+  def createFile(request: OnelineRequest, outPath: Path): Unit = {
+    val p1 = lineDrawerProperties(request)
+    val p2 = exportProperties(request)
+    val base64Text = request.img.replaceFirst("^.*,", "")
+    val bytes = Base64.getDecoder.decode(base64Text)
+    val in = new ByteArrayInputStream(bytes)
+    val out = Files.newOutputStream(outPath)
+    loan(in){
+      _in => loan(out){
+        _out => new OnelineImageCreator().create(in = _in, out = _out, p1, p2)
+      }
+    }
   }
 
   private def lineDrawerProperties(request: OnelineRequest) = {

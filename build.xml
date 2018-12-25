@@ -1,0 +1,46 @@
+<project name="oneine" default="dist" basedir=".">
+    <!--
+    <property name="sbt" location="C:\ta30\nutzb\sbt\bin\sbt.bat"/>
+    <property name="sbt" location="/opt/local/bin/sbt"/>
+    -->
+
+    <property name="sbt" location="/usr/bin/sbt"/>
+
+    <property name="build" location="target/oneline"/>
+
+    <target name="dist" depends="clean" description="builds a new distribution with optimized js">
+        <exec executable="${sbt}">
+            <env key="JAVA_OPTS" value="-Dsbt.log.noformat=true"/>
+            <arg line=";clean;fullOptJS" />
+        </exec>
+        <exec executable="${sbt}">
+            <env key="JAVA_OPTS" value="-Dsbt.log.noformat=true"/>
+            <arg line=";'project server';assembly" />
+        </exec>
+        <mkdir dir="${build}"/>
+        <mkdir dir="${build}/res"/>
+        <copy todir="${build}/res">
+            <fileset dir="client/target/scala-2.12">
+                <include name="*opt*"/>
+            </fileset>
+        </copy>
+        <copy todir="${build}">
+            <fileset dir="server/target/scala-2.12">
+                <include name="*.jar"/>
+            </fileset>
+        </copy>
+        <copy todir="${build}/res">
+            <fileset dir="client/src/main/webapp">
+                <include name="*.html"/>
+            </fileset>
+            <fileset dir="client/src/main/webapp/res">
+                <include name="*.png"/>
+                <include name="*.css"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="clean" description="remove all relevant directories">
+        <delete dir="${build}"/>
+    </target>
+</project>

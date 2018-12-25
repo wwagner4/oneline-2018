@@ -11,7 +11,7 @@ object OnelineImageCreatorMain extends App with Loaneable {
   }
 
   val inFile = Paths.get("core","src", "main", "resources", "donquichotte.jpg")
-  var outFile = Paths.get("core","target", "out_oneline.jpg")
+  val outFile = Paths.get("core","target", "out_oneline.jpg")
 
   val imgCreator = new RasterCreator()
   val lineDrawer = new LineDrawer(props)
@@ -22,6 +22,4 @@ object OnelineImageCreatorMain extends App with Loaneable {
   loan(Files.newOutputStream(outFile))(out => exporter.export(img, line, out))
 
   println(s"--- Created onleine-image at $outFile from $inFile")
-
-
 }
