@@ -8,7 +8,7 @@
 
     <property name="build" location="target/oneline"/>
 
-    <target name="dist" depends="clean" description="builds a new distribution with optimized js">
+    <target name="dist" description="builds a new distribution with optimized js">
         <exec executable="${sbt}">
             <env key="JAVA_OPTS" value="-Dsbt.log.noformat=true"/>
             <arg line=";clean;fullOptJS" />
