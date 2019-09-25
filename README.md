@@ -15,7 +15,10 @@ docker build -t oneline .
 
 run
 ```
+docker rm -f oneline
+
 docker run --rm -i -t -p 8887:8099 oneline
+docker run --name oneline -p 8887:8099 oneline &
 ```
 url
 ```
