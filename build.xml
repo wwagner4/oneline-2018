@@ -4,7 +4,7 @@
     <property name="sbt" location="/opt/local/bin/sbt"/>
     -->
 
-    <property name="sbt" location="/usr/bin/sbt"/>
+    <property name="sbt" location="/pgm/sbt/bin/sbt"/>
 
     <property name="build" location="target/oneline"/>
 
